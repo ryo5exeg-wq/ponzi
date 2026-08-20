@@ -187,6 +187,8 @@ tr.out td{opacity:.5}
 </style>
 </head>
 <body>
+<!--navbar-->
+<div id="navbar" style="position:relative;z-index:9999;display:flex;gap:8px;align-items:center;padding:7px 10px;background:#0a1120;border-bottom:1px solid #2c3f5e;font-family:system-ui,sans-serif"><a href="https://ryo5exeg-wq.github.io/ponzi/" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:#182640;border:1px solid #2c3f5e;color:#e8edf5;border-radius:99px;padding:7px 14px;font-size:14px;min-height:38px;box-sizing:border-box">🏠 <span>ゲーム一覧</span></a><span id="navSlot"></span></div>
 
 <!-- ============ ロビー ============ -->
 <div id="lobby">
@@ -369,8 +371,23 @@ $('btnAgain').onclick=async()=>{
     if(!j.ok)alert(j.error||'再戦できませんでした'); else $('over').classList.remove('show');}catch(e){alert(e.message);}
 };
 
-function toWait(){$('lobby').style.display='none';$('wait').style.display='';$('game').style.display='none';$('wCode').textContent=ST.code;}
-function toGame(){$('lobby').style.display='none';$('wait').style.display='none';$('game').style.display='';$('tCode').textContent=ST.code;}
+function toWait(){$('lobby').style.display='none';$('wait').style.display='';$('game').style.display='none';$('wCode').textContent=ST.code;navSlot(true);}
+function toGame(){$('lobby').style.display='none';$('wait').style.display='none';$('game').style.display='';$('tCode').textContent=ST.code;navSlot(true);}
+
+/* 上のバーに「ロビーに戻る」を出す（部屋に入っている間だけ） */
+function navSlot(inRoom){
+  const el=$('navSlot'); if(!el)return;
+  if(!inRoom){el.innerHTML='';return;}
+  if(el.dataset.on==='1')return;
+  el.dataset.on='1';
+  el.innerHTML='<button id="btnLobby" style="background:#182640;border:1px solid #2c3f5e;color:#e8edf5;'
+    +'border-radius:99px;padding:7px 14px;font-size:14px;min-height:38px;cursor:pointer">↩ ロビーに戻る</button>';
+  $('btnLobby').onclick=()=>{
+    if(!confirm('この部屋から抜けてロビーに戻ります。\n\n対戦中の場合、あなたの番はAIが代わりに進めます。\n同じリンクを開けば戻ってこられます。'))return;
+    localStorage.removeItem(LSK);
+    location.href=location.pathname;
+  };
+}
 
 /* ---------- ポーリング ---------- */
 let timer=null,failCnt=0;
