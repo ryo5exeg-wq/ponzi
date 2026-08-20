@@ -195,15 +195,17 @@ tr.out td{opacity:.5}
   <div id="lobbyErr"></div>
 
   <div class="card-box">
-    <h2>サーバー</h2>
-    <div class="fld">
-      <label>サーバーURL</label>
-      <input id="srv" placeholder="https://ponzi-server.ryo5exeg.workers.dev">
-    </div>
     <div class="fld">
       <label>あなたの名前</label>
-      <input id="nm" maxlength="12" placeholder="りょうま">
+      <input id="nm" maxlength="12" placeholder="お名前を入れてください">
     </div>
+    <details>
+      <summary class="sub" style="cursor:pointer;padding:4px 0">サーバーの設定（ふだんは触らなくてOK）</summary>
+      <div class="fld" style="margin-top:8px">
+        <input id="srv" placeholder="https://ponzi-server.ryo5exeg.workers.dev">
+        <div class="sub" style="margin-top:5px">つながらない時だけ、ここを確認してください。</div>
+      </div>
+    </details>
   </div>
 
   <div class="card-box">
@@ -332,7 +334,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;',
 
 /* ---------- ロビー操作 ---------- */
 $('btnCreate').onclick=async()=>{
-  const srv=$('srv').value.trim(); if(!srv){lobbyErr('サーバーURLを入れてください');return;}
+  const srv=$('srv').value.trim()||DEFAULT_SRV;
   ST.srv=srv;
   try{
     const j=await api('/api/room/create','POST',{hostName:$('nm').value.trim()||'ホスト',
@@ -342,7 +344,7 @@ $('btnCreate').onclick=async()=>{
   }catch(e){lobbyErr(e.message);}
 };
 $('btnJoin').onclick=async()=>{
-  const srv=$('srv').value.trim(); if(!srv){lobbyErr('サーバーURLを入れてください');return;}
+  const srv=$('srv').value.trim()||DEFAULT_SRV;
   const code=$('code').value.trim().toUpperCase(); if(code.length!==4){lobbyErr('部屋コードは4文字です');return;}
   ST.srv=srv;
   try{
@@ -356,7 +358,7 @@ $('btnStart').onclick=async()=>{
     if(!j.ok)alert(j.error||'開始できませんでした');}catch(e){alert(e.message);}
 };
 $('btnLink').onclick=()=>{
-  const u=location.origin+location.pathname+'?s='+encodeURIComponent(ST.srv)+'&r='+ST.code;
+  const u=location.origin+location.pathname+'?r='+ST.code+(ST.srv!==DEFAULT_SRV?'&s='+encodeURIComponent(ST.srv):'');
   navigator.clipboard?.writeText(u).then(()=>alert('参加リンクをコピーしました。\nLINEなどで送ってください。'),
     ()=>prompt('このリンクをコピーしてください',u));
 };
@@ -615,16 +617,23 @@ function showOver(V){
 }
 
 /* ---------- 起動 ---------- */
+const DEFAULT_SRV='https://ponzi-server.ryo5exeg.workers.dev';
 (function init(){
   const saved=loadST(), q=new URLSearchParams(location.search);
-  $('srv').value=q.get('s')||saved.srv||'https://ponzi-server.ryo5exeg.workers.dev';
-  $('nm').value=saved.nm||'';
-  if(q.get('r'))$('code').value=q.get('r').toUpperCase();
-  // 前回の続きがあれば復帰
-  if(saved.srv&&saved.code&&saved.pid&&!q.get('r')){
+  const joinCode=(q.get('r')||'').toUpperCase();
+  /* サーバーURLは既定値を自動で入れる。毎回入力させない。 */
+  $('srv').value=q.get('s')||saved.srv||DEFAULT_SRV;
+  if(joinCode)$('code').value=joinCode;
+
+  /* 同じ部屋の続きなら復帰する（リンクを開き直しても席が増えないように） */
+  if(saved.srv&&saved.code&&saved.pid&&(!joinCode||joinCode===saved.code)){
     ST.srv=saved.srv;ST.code=saved.code;ST.pid=saved.pid;
+    $('nm').value=saved.nm||'';
     toWait();poll();
+    return;
   }
+  /* 誘われて開いた人には名前を空にしておく（前の人の名前が残らないように） */
+  $('nm').value=joinCode?'':(saved.nm||'');
 })();
 </script>
 </body>

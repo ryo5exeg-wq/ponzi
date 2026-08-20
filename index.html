@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d1524">
+<title>ボードゲーム置き場</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0d1524; --panel:#182640; --line:#2c3f5e;
+  --gold:#d8b26a; --gold2:#f0d69a; --txt:#e8edf5; --dim:#93a3bd;
+  --green:#4fb07a; --blue:#5b9bd5;
+  --safe:env(safe-area-inset-bottom,0px);
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
+  font-family:"Yu Gothic UI","Hiragino Sans","Meiryo",system-ui,sans-serif;font-size:16px}
+body{background-image:url(https://ryo5exeg-wq.github.io/ponzi/assets/bg.jpg);
+  background-size:cover;background-position:center top;background-attachment:fixed;background-repeat:no-repeat}
+body::before{content:"";position:fixed;inset:0;background:#0d1524;opacity:.5;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:26px 14px calc(30px + var(--safe))}
+h1{font-size:29px;text-align:center;margin:0 0 6px;letter-spacing:.04em;
+  background:linear-gradient(90deg,var(--gold2),#c98b3a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{text-align:center;color:var(--dim);font-size:14px;margin-bottom:26px;line-height:1.6}
+
+.game{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px;
+  box-shadow:0 4px 16px #0006}
+.game h2{font-size:22px;color:var(--gold2);margin:0 0 3px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.game h2 .em{font-size:26px}
+.meta{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:2px 9px;font-weight:400}
+.game .desc{font-size:14px;color:var(--dim);line-height:1.65;margin:8px 0 14px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+a.btn{flex:1;min-width:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;text-decoration:none;border-radius:12px;padding:14px 12px;min-height:64px;
+  border:1px solid var(--line);background:#0a1120;color:var(--txt);font-size:17px;font-weight:700}
+a.btn small{font-size:11px;font-weight:400;color:var(--dim)}
+a.btn:active{filter:brightness(1.3)}
+a.btn.solo{border-color:#3d5a86}
+a.btn.online{background:linear-gradient(180deg,#c9a24a,#a8842f);border-color:#e0c07a;color:#20180a}
+a.btn.online small{color:#4a3a12}
+a.btn.kids{border-color:var(--green);color:#bdf0d3}
+
+.howto{background:#0a1120;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:6px}
+.howto h3{font-size:16px;color:var(--gold2);margin-bottom:8px}
+.howto ol{margin:0;padding-left:1.3em;font-size:14px;line-height:1.9;color:var(--dim)}
+.howto b{color:var(--txt)}
+.foot{text-align:center;font-size:11px;color:#5f7391;margin-top:22px;line-height:1.7}
+@media(min-width:720px){
+  .games{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .game{margin-bottom:0}
+  .game.wide{grid-column:1 / -1}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎲 ボードゲーム置き場</h1>
+  <div class="lead">ひとりでAIと遊ぶ「ソロ」と、みんなで遊ぶ「オンライン」が選べます。<br>
+    オンラインは<b>スマホでもOK</b>。部屋を作ってリンクを送るだけです。</div>
+
+  <div class="games">
+
+    <div class="game wide">
+      <h2><span class="em">🎩</span>ポンジスキーム <span class="meta">3〜5人</span> <span class="meta">かけひき</span></h2>
+      <div class="desc">
+        お金を集めて産業を買い、配当を払い続ける投資詐欺のゲーム。
+        <b>払えなくなった人が出た瞬間に終了</b>し、生き残った人だけで点数を比べます。
+        所持金と取引の金額は本人にしか見えません。
+      </div>
+      <div class="btns">
+        <a class="btn solo" href="https://ryo5exeg-wq.github.io/ponzi/%E3%83%9D%E3%83%B3%E3%82%B8%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%A0.html">ソロ<small>AIと対戦</small></a>
+        <a class="btn online" href="https://ryo5exeg-wq.github.io/ponzi/online.html">オンライン<small>みんなで対戦</small></a>
+      </div>
+    </div>
+
+    <div class="game">
+      <h2><span class="em">💣</span>ボムバスターズ <span class="meta">協力</span></h2>
+      <div class="desc">
+        みんなで協力して爆弾を解除する。切ってよい線を推理して、赤い線を切らずに全部処理できれば勝ち。
+      </div>
+      <div class="btns">
+        <a class="btn solo" href="https://ryo5exeg-wq.github.io/bombbusters/">ソロ<small>AIと協力</small></a>
+        <a class="btn online" href="https://ryo5exeg-wq.github.io/bombbusters/online.html">オンライン<small>みんなで協力</small></a>
+      </div>
+    </div>
+
+    <div class="game">
+      <h2><span class="em">🟦</span>ブロックス <span class="meta">2〜4人</span> <span class="meta">陣取り</span></h2>
+      <div class="desc">
+        自分の色のブロックを角どうしで繋げて置いていく陣取りゲーム。置けなくなったら終了、残りが少ない人の勝ち。
+      </div>
+      <div class="btns">
+        <a class="btn solo" href="https://ryo5exeg-wq.github.io/blokus/">ソロ<small>AIと対戦</small></a>
+        <a class="btn online" href="https://ryo5exeg-wq.github.io/blokus/online.html">オンライン<small>みんなで対戦</small></a>
+        <a class="btn kids" href="https://ryo5exeg-wq.github.io/blokus/kids.html">こども版<small>やさしいルール</small></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="howto">
+    <h3>オンラインの遊び方</h3>
+    <ol>
+      <li>誰か1人が「オンライン」を開いて <b>部屋をつくる</b></li>
+      <li><b>参加リンクをコピー</b> して、LINEなどでみんなに送る</li>
+      <li>みんなはリンクを開いて、名前を入れて入室</li>
+      <li>全員そろったら、部屋を作った人が <b>開始</b></li>
+    </ol>
+    <div class="sub" style="font-size:13px;color:var(--dim);margin-top:9px;line-height:1.7">
+      ・人数が足りない席には<b style="color:var(--txt)">AIが入ります</b>。<br>
+      ・電波が切れた人の番はAIが代わりに進めます。戻ってくればそのまま続きから遊べます。
+    </div>
+  </div>
+
+  <div class="foot">
+    身内で遊ぶための自作版です。市販ゲームのルールを学ぶ目的で作っており、配布・販売はしません。
+  </div>
+</div>
+</body>
+</html>
