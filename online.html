@@ -57,6 +57,11 @@ input[type=number]{text-align:right;font-size:22px;font-weight:700}
 .seat.me{background:#16294a}
 .dot{width:9px;height:9px;border-radius:50%;background:#44566f;flex:none}
 .dot.on{background:var(--green)}
+/* 対面用: 画面に出す参加QR。白地に置かないと読み取れないので必ず白箱 */
+.qrbox{background:#fff;border-radius:14px;padding:14px 12px 9px;margin-bottom:12px;text-align:center}
+#wQr svg{width:min(58vw,230px);height:min(58vw,230px);display:block;margin:0 auto}
+.qrbox .qs{color:#3c4c63;font-size:13px;margin-top:7px;font-weight:600}
+.qrbox .qs2{color:#7a869a;font-size:11px;margin-top:3px;font-family:"Consolas",monospace,"Yu Gothic UI"}
 
 /* ---------- ゲーム ---------- */
 #top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:7px;flex-wrap:wrap;
@@ -188,7 +193,7 @@ tr.out td{opacity:.5}
 </head>
 <body>
 <!--navbar-->
-<div id="navbar" style="position:relative;z-index:9999;display:flex;gap:8px;align-items:center;padding:7px 10px;background:#0a1120;border-bottom:1px solid #2c3f5e;font-family:system-ui,sans-serif"><a href="https://ryo5exeg-wq.github.io/ponzi/" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:#182640;border:1px solid #2c3f5e;color:#e8edf5;border-radius:99px;padding:7px 14px;font-size:14px;min-height:38px;box-sizing:border-box">🏠 <span>ゲーム一覧</span></a><span id="navSlot"></span></div>
+<div id="navbar" style="position:relative;z-index:9999;display:flex;gap:8px;align-items:center;padding:7px 10px;background:#0a1120;border-bottom:1px solid #2c3f5e;font-family:inherit"><a href="https://ryo5exeg-wq.github.io/ponzi/" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:#182640;border:1px solid #2c3f5e;color:#e8edf5;border-radius:99px;padding:7px 14px;font-size:14px;font-weight:600;min-height:38px;box-sizing:border-box">🏠 <span>ゲーム一覧</span></a><span id="navSlot"></span></div>
 
 <!-- ============ ロビー ============ -->
 <div id="lobby">
@@ -237,6 +242,11 @@ tr.out td{opacity:.5}
   <div class="codebox">
     <div class="sub">部屋コード</div>
     <div class="c" id="wCode">----</div>
+  </div>
+  <div class="qrbox" id="wQrBox">
+    <div id="wQr"></div>
+    <div class="qs">📷 スマホのカメラで読み取ると、この部屋に入れます</div>
+    <div class="qs2">💻 PCの人は ryo5exeg-wq.github.io/ponzi/ を開いて、上の部屋コードを入力</div>
   </div>
   <div class="rowb" style="margin-bottom:12px">
     <button id="btnLink">参加リンクをコピー</button>
@@ -306,6 +316,7 @@ tr.out td{opacity:.5}
 </div></div>
 
 <script src="ponzi_core.js"></script>
+<script src="qr.js"></script>
 <script>
 "use strict";
 /* ============================================================
@@ -371,7 +382,21 @@ $('btnAgain').onclick=async()=>{
     if(!j.ok)alert(j.error||'再戦できませんでした'); else $('over').classList.remove('show');}catch(e){alert(e.message);}
 };
 
-function toWait(){$('lobby').style.display='none';$('wait').style.display='';$('game').style.display='none';$('wCode').textContent=ST.code;navSlot(true);}
+function toWait(){$('lobby').style.display='none';$('wait').style.display='';$('game').style.display='none';$('wCode').textContent=ST.code;renderQr();navSlot(true);}
+
+/* 対面用の参加QR。部屋コードが変わったときだけ作り直す */
+function renderQr(){
+  const el=$('wQr'); if(!el)return;
+  if(typeof qrcode!=='function'){$('wQrBox').style.display='none';return;}   // qr.js未読込なら隠すだけ
+  if(el.dataset.code===ST.code)return;
+  const u=location.origin+location.pathname+'?r='+ST.code+(ST.srv!==DEFAULT_SRV?'&s='+encodeURIComponent(ST.srv):'');
+  try{
+    const q=qrcode(0,'M'); q.addData(u); q.make();
+    el.innerHTML=q.createSvgTag({cellSize:6,margin:3,scalable:true});
+    el.dataset.code=ST.code;
+    $('wQrBox').style.display='';
+  }catch(e){$('wQrBox').style.display='none';}
+}
 function toGame(){$('lobby').style.display='none';$('wait').style.display='none';$('game').style.display='';$('tCode').textContent=ST.code;navSlot(true);}
 
 /* 上のバーに「ロビーに戻る」を出す（部屋に入っている間だけ） */
