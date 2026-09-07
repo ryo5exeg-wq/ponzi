@@ -408,7 +408,7 @@ function navSlot(inRoom){
   el.innerHTML='<button id="btnLobby" style="background:#182640;border:1px solid #2c3f5e;color:#e8edf5;'
     +'border-radius:99px;padding:7px 14px;font-size:14px;min-height:38px;cursor:pointer">↩ ロビーに戻る</button>';
   $('btnLobby').onclick=()=>{
-    if(!confirm('この部屋から抜けてロビーに戻ります。\n\n対戦中の場合、あなたの番はAIが代わりに進めます。\n同じリンクを開けば戻ってこられます。'))return;
+    if(!confirm('この部屋から抜けてロビーに戻ります。\n\n抜けている間のあなたの番は、ホストが許可するとAIが進めます。\n同じリンクを開けば戻ってこられます。'))return;
     localStorage.removeItem(LSK);
     location.href=location.pathname;
   };
@@ -440,9 +440,24 @@ function renderWait(){
     return '<div class="seat on '+(s===ST.you?'me':'')+'"><span class="dot on"></span><span class="n">'+esc(p.name)+'</span>'
       +(s===ST.you?'<span class="tag sp">あなた</span>':'')+'</div>';
   }).join('');
-  const isHost=r.players.find(p=>p.seat===ST.you)&&r.host;
-  $('btnStart').style.display=(ST.you===0)?'':'none';
-  $('wNote').textContent=(ST.you===0)?'空いている席にはAIが入ります':'部屋を作った人が開始するのを待っています…';
+  const isHost=(r.hostSeat!==undefined)?(ST.you===r.hostSeat):(ST.you===0);
+  $('btnStart').style.display=isHost?'':'none';
+  $('wNote').textContent=isHost?'空いている席にはAIが入ります':'部屋を作った人が開始するのを待っています…';
+}
+/* AI代行の許可ボタンを出せる人＝ホスト。ホスト自身が切断中なら誰でも */
+function canApproveAi(){
+  const r=ST.room;if(!r||r.hostSeat===undefined)return false;
+  if(ST.you===r.hostSeat)return true;
+  const hp=r.players.find(p=>p.seat===r.hostSeat);
+  return !!(hp&&!hp.connected);
+}
+async function approveAi(seat,name){
+  if(!confirm(name+' さんは切断中です。\nAIに代行させますか？\n（本人がページを開き直せばいつでも復帰できます）'))return;
+  try{
+    const j=await api('/api/room/'+ST.code+'/aiok','POST',{playerId:ST.pid,seat:seat});
+    if(j.error)alert(j.error);
+  }catch(e){alert(e.message);}
+  poll();
 }
 
 /* ---------- ゲームの描画 ---------- */
@@ -501,8 +516,14 @@ function renderGame(){
     h+='<div class="top"><span class="nm">'+esc(p.name)+'</span>';
     if(isMe)h+='<span class="tag sp">あなた</span>';
     if(i===V.startP)h+='<span class="tag sp">🖋</span>';
-    if(!rp||rp.bot)h+='<span class="tag ai">AI</span>';
+    if(!rp)h+='<span class="tag ai">AI</span>';
+    else if(rp.bot)h+='<span class="tag ai">📶AI代行中</span>';
+    else if(rp.aiPending)h+='<span class="tag out">📶切断中</span>';
     if(p.out)h+='<span class="tag out">破産</span>';
+    if(rp&&rp.aiPending&&!p.out&&canApproveAi())
+      h+='<button style="background:#182640;border:1px solid #2c3f5e;color:#e8edf5;border-radius:99px;'
+        +'padding:3px 10px;font-size:12px;cursor:pointer;margin-left:4px;" '
+        +'onclick="approveAi('+i+',\''+esc(p.name).replace(/'/g,'')+'\')">🤖 AIに代行させる</button>';
     h+=isMe?('<span class="cash">$'+p.cash+'</span>')
            :('<span class="cash q" title="公開情報からの目安">〜$'+p.cashGuess+'</span>');
     h+='</div><div class="inds">'+IND.map((d,t)=>
