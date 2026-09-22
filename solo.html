@@ -212,14 +212,17 @@ details .bd b{color:var(--txt)}
   select{font-size:15px;padding:7px 10px}
   #log{height:250px;font-size:14px}
 }
+
+/* タイトルロゴ（2026-09-22・ChatGPT製 assets/logo.png） */
+.title-logo{display:block;height:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45));}
 </style>
 </head>
 <body>
 <!--navbar-->
-<div id="navbar" style="position:relative;z-index:9999;display:flex;gap:8px;align-items:center;padding:7px 10px;background:#0a1120;border-bottom:1px solid #2c3f5e;font-family:system-ui,sans-serif"><a href="https://ryo5exeg-wq.github.io/ponzi/" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:#182640;border:1px solid #2c3f5e;color:#e8edf5;border-radius:99px;padding:7px 14px;font-size:14px;min-height:38px;box-sizing:border-box">🏠 <span>ゲーム一覧</span></a><span id="navSlot"></span></div>
+<div id="navbar" style="position:relative;z-index:9999;display:flex;gap:8px;align-items:center;padding:7px 10px;background:#0a1120;border-bottom:1px solid #2c3f5e;font-family:inherit"><a href="https://ryo5exeg-wq.github.io/ponzi/" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:#182640;border:1px solid #2c3f5e;color:#e8edf5;border-radius:99px;padding:7px 14px;font-size:14px;font-weight:600;min-height:38px;box-sizing:border-box">🏠 <span>ゲーム一覧</span></a><span id="navSlot"></span></div>
 
 <header>
-  <h1>🎩 ポンジスキーム</h1>
+  <h1 style="margin:0;display:flex;align-items:center"><img class="title-logo" src="assets/logo.png" alt="ポンジスキーム" style="height:46px;width:auto"></h1>
   <span class="badge">ラウンド <b id="hRound">-</b></span>
   <span class="badge">フェーズ <b id="hPhase">-</b></span>
   <span class="badge">熊 <b id="hBear">-</b></span>
