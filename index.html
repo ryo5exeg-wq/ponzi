@@ -29,6 +29,11 @@ h1{font-size:29px;text-align:center;margin:0 0 6px;letter-spacing:.04em;
   box-shadow:0 4px 16px #0006}
 .game h2{font-size:22px;color:var(--gold2);margin:0 0 3px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .game h2 .em{font-size:26px}
+.glogo{display:flex;justify-content:center;align-items:center;margin:-4px 0 8px;min-height:64px}
+.glogo img{max-width:min(100%,360px);max-height:120px;object-fit:contain;border-radius:10px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.55))}
+.glogo img.boxed{background:#0a1120;padding:4px 10px;border:1px solid var(--line)}
+.game h2.hasLogo{justify-content:center;font-size:15px;color:var(--dim);margin-bottom:2px}
+.game h2.hasLogo .nm{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .meta{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:2px 9px;font-weight:400}
 .game .desc{font-size:14px;color:var(--dim);line-height:1.65;margin:8px 0 14px}
 .btns{display:flex;gap:10px;flex-wrap:wrap}
@@ -63,7 +68,8 @@ a.btn.kids{border-color:var(--green);color:#bdf0d3}
   <div class="games">
 
     <div class="game">
-      <h2><span class="em">🎩</span>ポンジスキーム <span class="meta">3〜5人</span> <span class="meta">かけひき</span></h2>
+      <div class="glogo"><img src="https://ryo5exeg-wq.github.io/ponzi/assets/hub_ponzi.png" alt="ポンジスキーム" loading="lazy"></div>
+      <h2 class="hasLogo"><span class="nm">ポンジスキーム</span><span class="meta">3〜5人</span> <span class="meta">かけひき</span></h2>
       <div class="desc">
         お金を集めて産業を買い、配当を払い続ける投資詐欺のゲーム。
         <b>払えなくなった人が出た瞬間に終了</b>し、生き残った人だけで点数を比べます。
@@ -76,7 +82,8 @@ a.btn.kids{border-color:var(--green);color:#bdf0d3}
     </div>
 
     <div class="game">
-      <h2><span class="em">💣</span>ボムバスターズ <span class="meta">協力</span></h2>
+      <div class="glogo"><img src="https://ryo5exeg-wq.github.io/ponzi/assets/hub_bomb.png" alt="ボムバスターズ！" loading="lazy"></div>
+      <h2 class="hasLogo"><span class="nm">ボムバスターズ</span><span class="meta">協力</span> <span class="meta">4〜5人</span></h2>
       <div class="desc">
         みんなで協力して爆弾を解除する。切ってよい線を推理して、赤い線を切らずに全部処理できれば勝ち。
       </div>
@@ -87,7 +94,8 @@ a.btn.kids{border-color:var(--green);color:#bdf0d3}
     </div>
 
     <div class="game">
-      <h2><span class="em">✋</span>ゴットファイブ！ <span class="meta">2〜4人</span> <span class="meta">すいり</span></h2>
+      <div class="glogo"><img src="https://ryo5exeg-wq.github.io/ponzi/assets/hub_gotfive.jpg" alt="ゴットファイブ！" loading="lazy"></div>
+      <h2 class="hasLogo"><span class="nm">ゴットファイブ！</span><span class="meta">2〜4人</span> <span class="meta">すいり</span></h2>
       <div class="desc">
         自分だけ見えない5枚の数字タイルを、質問をかさねて推理する。
         5つぜんぶ当てられたら<b>「ゴットファイブ！」</b>で勝ち。1つでも外すと脱落…。
@@ -99,7 +107,8 @@ a.btn.kids{border-color:var(--green);color:#bdf0d3}
     </div>
 
     <div class="game">
-      <h2><span class="em">🚓</span>シティチェイス <span class="meta">2〜4人</span> <span class="meta">おいかけっこ</span></h2>
+      <div class="glogo"><img src="https://ryo5exeg-wq.github.io/ponzi/assets/hub_citychase.png" alt="シティチェイス" loading="lazy"></div>
+      <h2 class="hasLogo"><span class="nm">シティチェイス</span><span class="meta">2〜4人</span> <span class="meta">おいかけっこ</span></h2>
       <div class="desc">
         パトカー3台の<b>警察チーム</b> vs 逃げる<b>バン1台</b>。5×5のビル街で、警察はビルを捜索し、犯人は痕跡を残しながら逃げる。
         11ターン逃げ切れば犯人の勝ち！
@@ -111,7 +120,8 @@ a.btn.kids{border-color:var(--green);color:#bdf0d3}
     </div>
 
     <div class="game">
-      <h2><span class="em">♠️</span>ポーカーチップ <span class="meta">2〜8人</span> <span class="meta">実物トランプ×スマホ</span></h2>
+      <div class="glogo"><img src="https://ryo5exeg-wq.github.io/ponzi/assets/hub_poker.jpg" alt="ポーカーチップ" loading="lazy"></div>
+      <h2 class="hasLogo"><span class="nm">ポーカーチップ</span><span class="meta">2〜8人</span> <span class="meta">実物トランプ×スマホ</span></h2>
       <div class="desc">
         トランプは<b>本物</b>を使い、チップだけスマホで管理するハイブリッド卓。
         真ん中にPC/タブレットを置き、各自のスマホからベット。サイドポット計算も役判定もおまかせ。
@@ -122,7 +132,8 @@ a.btn.kids{border-color:var(--green);color:#bdf0d3}
     </div>
 
     <div class="game">
-      <h2><span class="em">🟦</span>ブロックス <span class="meta">2〜4人</span> <span class="meta">陣取り</span></h2>
+      <div class="glogo"><img src="https://ryo5exeg-wq.github.io/ponzi/assets/hub_blokus.png" alt="ブロックス" loading="lazy"></div>
+      <h2 class="hasLogo"><span class="nm">ブロックス</span><span class="meta">2〜4人</span> <span class="meta">陣取り</span></h2>
       <div class="desc">
         自分の色のブロックを角どうしで繋げて置いていく陣取りゲーム。置けなくなったら終了、残りが少ない人の勝ち。
       </div>
